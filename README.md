@@ -13,7 +13,7 @@
 [![Project Page](https://img.shields.io/badge/Project-Page-green)](#)
 [![License](https://img.shields.io/badge/License-MIT-lightgrey.svg)](LICENSE)
 
-<img src="assets/teaser.jpg" width="100%">
+<img src="./teaser.jpg" width="100%">
 
 <em>CovHiS stays consistent far beyond the usual guidance range. Prompt: "A pink dog", SDXL, same NFEs. APG (top) collapses as ω grows; CovHiS (bottom) remains stable up to ω = 700.</em>
 
