@@ -23,8 +23,8 @@
 
 ## 📰 News
 
-- **[2026-xx-xx]** Code released.
-- **[2026-xx-xx]** CovHiS is accepted to **ACCV 2026**! 🎉
+- **[2026-09-28]** Code released.
+- **[2026-09-25]** CovHiS is accepted to **ACCV 2026**! 🎉
 
 ## 📖 Overview
 
