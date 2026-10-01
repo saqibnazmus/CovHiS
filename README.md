@@ -29,11 +29,11 @@ prompt "A pink dog" on SDXL, under the same number of function evaluations.
 ## 🔥 News
 
 - **[2026-09-25]** CovHiS has been accepted to **ACCV 2026**! 🎉
-- **[2026-10-01]** Code for the SDXL and SD3 pipelines and the quick-run notebook is released.
+- **[2026-10-01]** Code for the SDXL and SD3 pipelines and the quick-run notebook is released. 🚀
 
 ---
 
-## Overview
+## 📖 Overview
 
 Classifier-free guidance (CFG) is essential for high-quality conditional generation, but its
 scale is a double-edged sword: a large guidance scale ω improves prompt alignment while causing
@@ -58,7 +58,7 @@ text-to-video generation (Mochi), at an inference-time overhead of only **+1.8%*
 
 ---
 
-## Text-to-Image Results
+## 🖼️ Text-to-Image Results
 
 <p align="center">
   <img src="T2I.png" width="100%" alt="CovHiS text-to-image results"/>
@@ -70,8 +70,36 @@ scale (ω = 30.5).
 
 ---
 
+## 🎬 Text-to-Video Results
 
-## Quantitative Results
+CFG vs. CovHiS on **Mochi** under guidance scale **ω = 17.5**.
+
+### 🚙 Vintage SUV
+> *"The camera follows behind a white vintage SUV with a black roof rack as it speeds up a steep
+> dirt road surrounded by pine trees on a steep mountain slope, dust kicks up from its tires, the
+> sunlight shines on the SUV as it speeds along the dirt road, casting a warm glow over the scene."*
+
+https://github.com/user-attachments/assets/REPLACE-WITH-SUV-VIDEO-LINK
+
+### 🐠 Tropical fish
+> *"A vibrant tropical fish glides gracefully through colorful ocean reefs, surrounded by swaying
+> coral, shimmering schools of tiny fish, and beams of sunlight filtering down from the water's
+> surface. The scene feels alive with movement, as bubbles rise gently and the reef glows in vivid
+> shades …"*
+
+https://github.com/user-attachments/assets/REPLACE-WITH-FISH-VIDEO-LINK
+
+### 👴 Gray-haired man in Paris
+> *"An extreme close-up of a gray-haired man with a beard in his 60s, he is deep in thought
+> pondering the history of the universe as he sits at a cafe in Paris, his eyes focus on people
+> off screen as they walk as he sits mostly motionless, he is dressed in a wool coat suit coat with
+> a button-down shirt …"*
+
+https://github.com/user-attachments/assets/REPLACE-WITH-MAN-VIDEO-LINK
+
+---
+
+## 📊 Quantitative Results
 
 Quantitative comparison with guidance methods on SDXL and SD3.0 (30K MS-COCO validation captions)
 under a moderate (ω = 7.5) and a high (ω = 30.5) guidance scale. Each cell reports
@@ -128,7 +156,7 @@ under a moderate (ω = 7.5) and a high (ω = 30.5) guidance scale. Each cell rep
 
 ---
 
-## Text-to-Video Quantitative Results
+## 🎥 Text-to-Video Quantitative Results
 
 Text-to-video generation with **Mochi** on 100 randomly sampled VBench prompts.
 
@@ -139,14 +167,14 @@ Text-to-video generation with **Mochi** on 100 randomly sampled VBench prompts.
 
 ---
 
-## Clone the Repository
+## 📥 Clone the Repository
 
 ```bash
 git clone https://github.com/saqibnazmus/CovHiS.git
 cd CovHiS
 ```
 
-## Create an Environment and Install the Dependencies
+## ⚙️ Create an Environment and Install the Dependencies
 
 ```bash
 conda create -n covhis python=3.10 -y
@@ -165,35 +193,26 @@ huggingface-cli login
 
 ---
 
-## Quick Run
-
-
+## 🚀 Quick Run
 
 ```python
-# ===== CovHiS quick run: SDXL and SD3 =====
-import os, torch
+# ===== CovHiS quick run: SDXL =====
+import os
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"   # choose the GPU(s); must be set BEFORE importing torch
+
+import torch
 import numpy as np
 from matplotlib import pyplot as plt
-import gc 
-print(os.environ.get("CUDA_VISIBLE_DEVICES"))
-print(torch.cuda.device_count())
-print(torch.cuda.is_available())
+from pipeline_covhis_sdxl import StableDiffusionXLcovhisPipeline
 
+print("CUDA available:", torch.cuda.is_available(), "| GPUs:", torch.cuda.device_count())
 
-# Option A: just use the first visible GPU
 DEVICE = "cuda:0"
-
-# Option B: unhide all GPUs (must run BEFORE importing torch / starting CUDA)
-os.environ["CUDA_VISIBLE_DEVICES"] = "0,1,2,3"
 NUM_STEPS = 28
 PROMPT = "A pink dog"
 NEGATIVE_PROMPT = ""
 SEED = 1
 GUIDANCE_SCALE = 30.5
-
-###### run covhis
-
-from pipeline_covhis_sdxl import StableDiffusionXLcovhisPipeline
 
 pipe = StableDiffusionXLcovhisPipeline.from_pretrained(
     "stabilityai/stable-diffusion-xl-base-1.0",
@@ -209,22 +228,22 @@ image = pipe(
     guidance_scale=GUIDANCE_SCALE,
     generator=generator,
 ).images[0]
-output = np.concatenate([np.array(image)], 1)
 
-plt.figure(figsize=(16, 8))
-plt.imshow(output)
-
+plt.figure(figsize=(8, 8))
+plt.imshow(np.array(image))
+plt.axis("off")
+plt.show()
 ```
 
 ---
 
-## Citation
+## 📝 Citation
 
 The BibTeX entry will be available after publication.
 
 ---
 
-## Contact
+## 📧 Contact
 
 For questions, please open an issue or contact:
 
@@ -233,6 +252,6 @@ For questions, please open an issue or contact:
 
 ---
 
-## License
+## 📜 License
 
 This project is released under the [MIT License](LICENSE).
