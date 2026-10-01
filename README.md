@@ -6,6 +6,8 @@
 
 <sup>1</sup>Jeju National University, Republic of Korea &nbsp;&nbsp; <sup>2</sup>University of Vaasa, Finland
 
+### ACCV 2026
+
 [![Paper](https://img.shields.io/badge/Paper-ACCV%202026-blue)](#)
 [![Supplementary](https://img.shields.io/badge/Supplementary-PDF-orange)](#)
 [![Website](https://img.shields.io/badge/Project-Website-green)](#)
@@ -15,12 +17,19 @@
 </div>
 
 <p align="center">
-  <img src="teaser.jpg" width="100%" alt="CovHiS teaser"/>
+  <img src="teaser.png" width="100%" alt="CovHiS teaser"/>
 </p>
 <p align="center"><em>
 CovHiS keeps generations consistent beyond fixed high guidance scales: APG vs. CovHiS for the
 prompt "A pink dog" on SDXL, under the same number of function evaluations.
 </em></p>
+
+---
+
+## 🔥 News
+
+- **[YYYY-MM-DD]** CovHiS has been accepted to **ACCV 2026**! 🎉
+- **[YYYY-MM-DD]** Code for the SDXL and SD3 pipelines and the quick-run notebook is released.
 
 ---
 
@@ -52,12 +61,43 @@ text-to-video generation (Mochi), at an inference-time overhead of only **+1.8%*
 ## Text-to-Image Results
 
 <p align="center">
-  <img src="T2I.png" width="100%" alt="CovHiS text-to-image results"/>
+  <img src="t2i_results.png" width="100%" alt="CovHiS text-to-image results"/>
 </p>
 <p align="center"><em>
 Qualitative comparison of CFG, HiGS, APG and CovHiS on SDXL and SD3 under a high guidance
 scale (ω = 30.5).
 </em></p>
+
+---
+
+## Text-to-Video Results
+
+CFG vs. CovHiS on **Mochi** under guidance scale **ω = 17.5**.
+
+### 🚙 Vintage SUV
+> *"The camera follows behind a white vintage SUV with a black roof rack as it speeds up a steep
+> dirt road surrounded by pine trees on a steep mountain slope, dust kicks up from its tires, the
+> sunlight shines on the SUV as it speeds along the dirt road, casting a warm glow over the scene."*
+
+https://github.com/user-attachments/assets/REPLACE-WITH-SUV-VIDEO-LINK
+
+### 🐠 Tropical fish
+> *"A vibrant tropical fish glides gracefully through colorful ocean reefs, surrounded by swaying
+> coral, shimmering schools of tiny fish, and beams of sunlight filtering down from the water's
+> surface. The scene feels alive with movement, as bubbles rise gently and the reef glows in vivid
+> shades …"*
+
+https://github.com/user-attachments/assets/REPLACE-WITH-FISH-VIDEO-LINK
+
+### 👴 Gray-haired man in Paris
+> *"An extreme close-up of a gray-haired man with a beard in his 60s, he is deep in thought
+> pondering the history of the universe as he sits at a cafe in Paris, his eyes focus on people
+> off screen as they walk as he sits mostly motionless, he is dressed in a wool coat suit coat with
+> a button-down shirt …"*
+
+https://github.com/user-attachments/assets/REPLACE-WITH-MAN-VIDEO-LINK
+
+<sub>Original files: [`video_suv.mp4`](video_suv.mp4) · [`video_fish.mp4`](video_fish.mp4) · [`video_man.mp4`](video_man.mp4)</sub>
 
 ---
 
@@ -157,63 +197,26 @@ huggingface-cli login
 
 ## Quick Run
 
+Open [`quick_run.ipynb`](quick_run.ipynb) locally or in
+[Google Colab](https://colab.research.google.com/github/saqibnazmus/CovHiS/blob/main/quick_run.ipynb)
+and run the cell below. It generates images with CovHiS on both SDXL and SD3 and displays them.
 
 ```python
-# ===== CovHiS quick run: SDXL =====
-import os, torch
-import numpy as np
-from matplotlib import pyplot as plt
-import gc 
-print(os.environ.get("CUDA_VISIBLE_DEVICES"))
-print(torch.cuda.device_count())
-print(torch.cuda.is_available())
+# ===== CovHiS quick run: SDXL and SD3 =====
+import glob, os
+from IPython.display import Image, display
 
+# 1) CovHiS + SDXL
+!python pipeline_covhis_sdxl.py
 
-# Option A: just use the first visible GPU
-DEVICE = "cuda:0"
+# 2) CovHiS + SD3
+!python pipeline_covhis_sd3.py
 
-# Option B: unhide all GPUs (must run BEFORE importing torch / starting CUDA)
-os.environ["CUDA_VISIBLE_DEVICES"] = "0,1,2,3"
-
-NUM_STEPS = 50
-prompt = ["Charcoal sketch of a bicycle under a lamppost."]
-PROMPT = prompt
-NEGATIVE_PROMPT = ""
-
-SEED = 1
-GUIDANCE_SCALE = 7.5
-
-from pipeline_covhis_sdxl import StableDiffusionXLcovhisPipeline
-
-model_id = "stabilityai/stable-diffusion-xl-base-1.0"
-
-pipe = StableDiffusionXLcovhisPipeline.from_pretrained(
-    model_id,
-    torch_dtype=dtype,
-    use_safetensors=True,
-    variant="fp16" if dtype == torch.float16 else None,
-).to(device)
-
-# Optional: use DDIM, as in the paper's main experiments.
-# Comment this out to keep SDXL's default Euler scheduler.
-pipe.scheduler = DDIMScheduler.from_config(pipe.scheduler.config)
-
-# Vanilla CFG baseline that shares the same weights (no extra memory).
-baseline = StableDiffusionXLPipeline(**pipe.components)
-
-generator = torch.Generator(device=DEVICE).manual_seed(SEED)
-
-image = pipe(
-    prompt=prompt,
-    guidance_scale=guidance_scale,
-    num_inference_steps=num_inference_steps,
-    generator=torch.Generator(device).manual_seed(seed),
-).images[0]
-
-output = np.concatenate([np.array(image)], 1)
-plt.figure(figsize=(16, 8))
-plt.imshow(output)
-
+# 3) Show the generated images
+OUTPUT_DIR = "outputs"   # change to the folder your pipelines save images to
+for path in sorted(glob.glob(os.path.join(OUTPUT_DIR, "*.png"))):
+    print(os.path.basename(path))
+    display(Image(filename=path, width=512))
 ```
 
 ---
@@ -229,6 +232,7 @@ The BibTeX entry will be available after publication.
 For questions, please open an issue or contact:
 
 - Nazmus Saqib: nsaqib1995@gmail.com
+- Masud-An Nur Islam Fahim: masud.fahim@uwasa.fi
 
 ---
 
