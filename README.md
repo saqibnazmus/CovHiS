@@ -157,26 +157,63 @@ huggingface-cli login
 
 ## Quick Run
 
-Open [`quick_run.ipynb`](quick_run.ipynb) locally or in
-[Google Colab](https://colab.research.google.com/github/saqibnazmus/CovHiS/blob/main/quick_run.ipynb)
-and run the cell below. It generates images with CovHiS on both SDXL and SD3 and displays them.
 
 ```python
-# ===== CovHiS quick run: SDXL and SD3 =====
-import glob, os
-from IPython.display import Image, display
+# ===== CovHiS quick run: SDXL =====
+import os, torch
+import numpy as np
+from matplotlib import pyplot as plt
+import gc 
+print(os.environ.get("CUDA_VISIBLE_DEVICES"))
+print(torch.cuda.device_count())
+print(torch.cuda.is_available())
 
-# 1) CovHiS + SDXL
-!python pipeline_covhis_sdxl.py
 
-# 2) CovHiS + SD3
-!python pipeline_covhis_sd3.py
+# Option A: just use the first visible GPU
+DEVICE = "cuda:0"
 
-# 3) Show the generated images
-OUTPUT_DIR = "outputs"   # change to the folder your pipelines save images to
-for path in sorted(glob.glob(os.path.join(OUTPUT_DIR, "*.png"))):
-    print(os.path.basename(path))
-    display(Image(filename=path, width=512))
+# Option B: unhide all GPUs (must run BEFORE importing torch / starting CUDA)
+os.environ["CUDA_VISIBLE_DEVICES"] = "0,1,2,3"
+
+NUM_STEPS = 50
+prompt = ["Charcoal sketch of a bicycle under a lamppost."]
+PROMPT = prompt
+NEGATIVE_PROMPT = ""
+
+SEED = 1
+GUIDANCE_SCALE = 7.5
+
+from pipeline_covhis_sdxl import StableDiffusionXLcovhisPipeline
+
+model_id = "stabilityai/stable-diffusion-xl-base-1.0"
+
+pipe = StableDiffusionXLcovhisPipeline.from_pretrained(
+    model_id,
+    torch_dtype=dtype,
+    use_safetensors=True,
+    variant="fp16" if dtype == torch.float16 else None,
+).to(device)
+
+# Optional: use DDIM, as in the paper's main experiments.
+# Comment this out to keep SDXL's default Euler scheduler.
+pipe.scheduler = DDIMScheduler.from_config(pipe.scheduler.config)
+
+# Vanilla CFG baseline that shares the same weights (no extra memory).
+baseline = StableDiffusionXLPipeline(**pipe.components)
+
+generator = torch.Generator(device=DEVICE).manual_seed(SEED)
+
+image = pipe(
+    prompt=prompt,
+    guidance_scale=guidance_scale,
+    num_inference_steps=num_inference_steps,
+    generator=torch.Generator(device).manual_seed(seed),
+).images[0]
+
+output = np.concatenate([np.array(image)], 1)
+plt.figure(figsize=(16, 8))
+plt.imshow(output)
+
 ```
 
 ---
