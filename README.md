@@ -229,7 +229,6 @@ The BibTeX entry will be available after publication.
 For questions, please open an issue or contact:
 
 - Nazmus Saqib: nsaqib1995@gmail.com
-- Masud-An Nur Islam Fahim: masud.fahim@uwasa.fi
 
 ---
 
