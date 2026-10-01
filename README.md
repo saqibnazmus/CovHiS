@@ -17,7 +17,7 @@
 </div>
 
 <p align="center">
-  <img src="teaser.png" width="100%" alt="CovHiS teaser"/>
+  <img src="teaser.jpg" width="100%" alt="CovHiS teaser"/>
 </p>
 <p align="center"><em>
 CovHiS keeps generations consistent beyond fixed high guidance scales: APG vs. CovHiS for the
@@ -61,7 +61,7 @@ text-to-video generation (Mochi), at an inference-time overhead of only **+1.8%*
 ## Text-to-Image Results
 
 <p align="center">
-  <img src="T2I.jpg" width="100%" alt="CovHiS text-to-image results"/>
+  <img src="T2I.png" width="100%" alt="CovHiS text-to-image results"/>
 </p>
 <p align="center"><em>
 Qualitative comparison of CFG, HiGS, APG and CovHiS on SDXL and SD3 under a high guidance
@@ -70,36 +70,6 @@ scale (ω = 30.5).
 
 ---
 
-## Text-to-Video Results
-
-CFG vs. CovHiS on **Mochi** under guidance scale **ω = 17.5**.
-
-### 🚙 Vintage SUV
-> *"The camera follows behind a white vintage SUV with a black roof rack as it speeds up a steep
-> dirt road surrounded by pine trees on a steep mountain slope, dust kicks up from its tires, the
-> sunlight shines on the SUV as it speeds along the dirt road, casting a warm glow over the scene."*
-
-https://github.com/user-attachments/assets/REPLACE-WITH-SUV-VIDEO-LINK
-
-### 🐠 Tropical fish
-> *"A vibrant tropical fish glides gracefully through colorful ocean reefs, surrounded by swaying
-> coral, shimmering schools of tiny fish, and beams of sunlight filtering down from the water's
-> surface. The scene feels alive with movement, as bubbles rise gently and the reef glows in vivid
-> shades …"*
-
-https://github.com/user-attachments/assets/REPLACE-WITH-FISH-VIDEO-LINK
-
-### 👴 Gray-haired man in Paris
-> *"An extreme close-up of a gray-haired man with a beard in his 60s, he is deep in thought
-> pondering the history of the universe as he sits at a cafe in Paris, his eyes focus on people
-> off screen as they walk as he sits mostly motionless, he is dressed in a wool coat suit coat with
-> a button-down shirt …"*
-
-https://github.com/user-attachments/assets/REPLACE-WITH-MAN-VIDEO-LINK
-
-<sub>Original files: [`video_suv.mp4`](video_suv.mp4) · [`video_fish.mp4`](video_fish.mp4) · [`video_man.mp4`](video_man.mp4)</sub>
-
----
 
 ## Quantitative Results
 
