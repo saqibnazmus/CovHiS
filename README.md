@@ -86,7 +86,8 @@ https://github.com/user-attachments/assets/REPLACE-WITH-FISH-VIDEO-LINK
 > off screen as they walk as he sits mostly motionless, he is dressed in a wool coat suit coat with
 > a button-down shirt …"*
 
-https://github.com/saqibnazmus/CovHiS/blob/main/CovHiS_gray-haired%20man.mp4
+
+<video src="[https://github.com/user-attachments/assets/8f3c2a1e-....](https://github.com/saqibnazmus/CovHiS/blob/main/CovHiS_gray-haired%20man.mp4)" width="100%" controls></video>
 
 <sub>Original files: [`video_suv.mp4`](video_suv.mp4) · [`video_fish.mp4`](video_fish.mp4) · [`video_man.mp4`](video_man.mp4)</sub>
 
