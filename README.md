@@ -15,7 +15,7 @@
 </div>
 
 <p align="center">
-  <img src="teaser.png" width="100%" alt="CovHiS teaser"/>
+  <img src="teaser.jpg" width="100%" alt="CovHiS teaser"/>
 </p>
 <p align="center"><em>
 CovHiS keeps generations consistent beyond fixed high guidance scales: APG vs. CovHiS for the
